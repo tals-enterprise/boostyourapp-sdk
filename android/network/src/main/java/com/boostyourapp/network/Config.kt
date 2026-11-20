@@ -5,5 +5,5 @@ package com.boostyourapp.network
 internal object BoostConfig {
     const val API_URL = "https://boostyourapp-api.tals.app"
     const val API_KEY = "sb_publishable_HDkTnAYvPUI36ize7F1Bbg_meUvAZ7Q"
-    const val SDK_VERSION = "0.1.0"
+    const val SDK_VERSION = "0.1.1"
 }

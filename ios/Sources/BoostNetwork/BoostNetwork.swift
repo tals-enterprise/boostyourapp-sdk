@@ -108,8 +108,9 @@ public final class BoostNetwork: NSObject {
         super.init()
     }
 
-    /// Version du SDK.
-    @objc public static var version: String {
+    /// Version du SDK. En Objective-C : `[BoostNetwork sdkVersion]` (`+version` est déjà une méthode de NSObject,
+    /// le même sélecteur empêcherait le module de compiler).
+    @objc(sdkVersion) public static var version: String {
         return BoostConfig.sdkVersion
     }
 

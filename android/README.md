@@ -9,7 +9,7 @@ Dépôt JitPack dans `settings.gradle.kts` (`maven("https://jitpack.io")` dans `
 puis dans le `build.gradle.kts` de l'app :
 
 ```kotlin
-implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.0")
+implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.1")
 ```
 
 ## Intégration
