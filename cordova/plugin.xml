@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Plugin Cordova du réseau d'échange de bannières BoostYourApp.
+  Pont minimal vers les cœurs natifs : AAR Android (sdk/android) et sources Swift (sdk/ios),
+  copiés par sdk/scripts/sync.mjs (npm run sync).
+-->
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="@tals-enterprise/boostyourapp-cordova"
+        version="0.1.0">
+    <name>BoostYourApp</name>
+    <description>Bannière du réseau d'échange de pubs BoostYourApp</description>
+    <license>MIT</license>
+    <keywords>banner,ads,boostyourapp</keywords>
+
+    <engines>
+        <engine name="cordova-android" version=">=12.0.0" />
+        <engine name="cordova-ios" version=">=7.0.0" />
+    </engines>
+
+    <js-module src="www/boostnetwork.js" name="BoostNetwork">
+        <clobbers target="BoostNetwork" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="BoostNetwork">
+                <param name="android-package" value="com.boostyourapp.cordova.BoostNetworkPlugin" />
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <source-file src="src/android/BoostNetworkPlugin.java" target-dir="src/com/boostyourapp/cordova" />
+        <!-- Cœur Android compilé, ajouté au module app par boost-network.gradle -->
+        <lib-file src="src/android/boost-network.aar" />
+        <framework src="src/android/boost-network.gradle" custom="true" type="gradleReference" />
+    </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="BoostNetwork">
+                <param name="ios-package" value="BoostNetworkPlugin" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/ios/BoostNetworkPlugin.swift" />
+        <!-- Cœur iOS : liste régénérée par sdk/scripts/sync.mjs -->
+        <!-- core:ios:start -->
+        <source-file src="src/ios/core/Api.swift" />
+        <source-file src="src/ios/core/BannerController.swift" />
+        <source-file src="src/ios/core/BannerView.swift" />
+        <source-file src="src/ios/core/BoostNetwork.swift" />
+        <source-file src="src/ios/core/Config.swift" />
+        <source-file src="src/ios/core/Hooks.swift" />
+        <source-file src="src/ios/core/IconLoader.swift" />
+        <source-file src="src/ios/core/InterstitialController.swift" />
+        <source-file src="src/ios/core/InterstitialView.swift" />
+        <source-file src="src/ios/core/Queues.swift" />
+        <source-file src="src/ios/core/ShowcaseView.swift" />
+        <source-file src="src/ios/core/Viewability.swift" />
+        <source-file src="src/ios/core/ViewabilityProbe.swift" />
+        <!-- core:ios:end -->
+    </platform>
+</plugin>

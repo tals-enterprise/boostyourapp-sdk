@@ -1,0 +1,8 @@
+# Publication du SDK Android par JitPack, à partir des tags du dépôt public :
+#   implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.0")
+# JitPack fournit GROUP (com.github.tals-enterprise), ARTIFACT (boostyourapp-sdk) et VERSION (le tag).
+# Seule la librairie est construite (pas l'app de démonstration).
+jdk:
+  - openjdk17
+install:
+  - cd android && chmod +x gradlew && ./gradlew :network:publishReleasePublicationToMavenLocal --no-daemon -Pboost.group=$GROUP -Pboost.artifact=$ARTIFACT -Pboost.publishVersion=$VERSION

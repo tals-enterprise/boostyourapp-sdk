@@ -1,0 +1,6 @@
+// Appliqué au module app par Cordova (framework de type gradleReference).
+// Le cœur Android est en Kotlin : sa librairie standard est ajoutée ici, sans plugin Kotlin à activer.
+dependencies {
+    implementation files('libs/boost-network.aar')
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
+}

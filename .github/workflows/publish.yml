@@ -1,0 +1,64 @@
+# Publication des plugins sur npm à chaque tag de version (0.2.0, 0.3.0…) du dépôt public.
+# Android (JitPack) et iOS (Swift Package Manager) suivent le tag d'eux-mêmes : rien à faire ici pour eux.
+#
+# Prérequis : secret NPM_TOKEN (jeton « Automation » ou « Granular » de npmjs.com, droit de publication
+# sur @tals-enterprise/boostyourapp-capacitor, @tals-enterprise/boostyourapp-react-native et @tals-enterprise/boostyourapp-cordova).
+name: Publication npm
+
+on:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: read
+  id-token: write   # provenance npm : lien vérifiable entre le paquet et ce dépôt
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag et version du SDK identiques
+        run: |
+          version=$(sed -n 's/^boost\.version=//p' android/gradle.properties)
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Le tag $GITHUB_REF_NAME ne correspond pas à boost.version ($version) dans android/gradle.properties"
+            exit 1
+          fi
+
+      # JDK 21 : celui de Capacitor 8 ; il construit aussi l'AAR embarqué par le plugin Cordova
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Synchronisation des cœurs natifs dans les plugins
+        run: |
+          chmod +x android/gradlew
+          node scripts/sync.mjs
+
+      - name: Capacitor
+        working-directory: capacitor
+        run: |
+          npm ci
+          npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Cordova
+        working-directory: cordova
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: React Native
+        working-directory: react-native
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

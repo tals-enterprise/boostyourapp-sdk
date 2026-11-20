@@ -1,0 +1,62 @@
+// Plugin Capacitor : le pont (com.boostyourapp.capacitor) et le cœur Android du SDK (com.boostyourapp.network),
+// copié depuis sdk/android par sdk/scripts/sync.mjs, compilés ensemble.
+
+ext {
+    junitVersion = project.hasProperty('junitVersion') ? rootProject.ext.junitVersion : '4.13.2'
+    androidxAppCompatVersion = project.hasProperty('androidxAppCompatVersion') ? rootProject.ext.androidxAppCompatVersion : '1.7.1'
+}
+
+buildscript {
+    ext.kotlin_version = project.hasProperty("kotlin_version") ? rootProject.ext.kotlin_version : '2.2.20'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.13.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace = "com.boostyourapp.capacitor"
+    compileSdk = project.hasProperty('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 36
+    defaultConfig {
+        minSdkVersion project.hasProperty('minSdkVersion') ? rootProject.ext.minSdkVersion : 24
+        targetSdkVersion project.hasProperty('targetSdkVersion') ? rootProject.ext.targetSdkVersion : 36
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError = false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':capacitor-android')
+    // Plugin.getActivity() renvoie une AppCompatActivity (déjà présente dans toute app Capacitor)
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    testImplementation "junit:junit:$junitVersion"
+}

@@ -1,0 +1,23 @@
+# Copies des cœurs natifs dans les plugins : générées par sdk/scripts/sync.mjs (npm run sync)
+capacitor/android/src/main/java/com/boostyourapp/network/
+capacitor/ios/Sources/BoostNetworkPlugin/Core/
+capacitor/ios/Sources/BoostNetworkPlugin/PrivacyInfo.xcprivacy
+cordova/src/android/boost-network.aar
+cordova/src/ios/core/
+cordova/src/ios/PrivacyInfo.xcprivacy
+react-native/android/src/main/java/com/boostyourapp/network/
+react-native/ios/core/
+react-native/ios/PrivacyInfo.xcprivacy
+
+# Paquets npm (npm pack) et builds
+*.tgz
+capacitor/dist/
+**/android/build/
+**/android/.gradle/
+capacitor/android/local.properties
+
+# Swift Package Manager / Xcode
+ios/.build/
+ios/.swiftpm/
+**/xcuserdata/
+**/DerivedData/

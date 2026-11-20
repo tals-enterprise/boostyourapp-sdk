@@ -1,0 +1,37 @@
+{
+  "name": "@tals-enterprise/boostyourapp-cordova",
+  "version": "0.1.0",
+  "description": "Bannière du réseau d'échange de pubs BoostYourApp pour Cordova (Android et iOS)",
+  "types": "types/index.d.ts",
+  "cordova": {
+    "id": "@tals-enterprise/boostyourapp-cordova",
+    "platforms": ["android", "ios"]
+  },
+  "files": [
+    "plugin.xml",
+    "www/",
+    "types/",
+    "src/android/BoostNetworkPlugin.java",
+    "src/android/boost-network.gradle",
+    "src/android/boost-network.aar",
+    "src/ios/"
+  ],
+  "keywords": ["ecosystem:cordova", "cordova-android", "cordova-ios", "banner", "ads"],
+  "author": "BoostYourApp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tals-enterprise/boostyourapp-sdk.git",
+    "directory": "cordova"
+  },
+  "homepage": "https://github.com/tals-enterprise/boostyourapp-sdk/tree/main/cordova#readme",
+  "engines": {
+    "cordovaDependencies": {
+      "0.1.0": { "cordova-android": ">=12.0.0", "cordova-ios": ">=7.0.0" }
+    }
+  },
+  "scripts": {
+    "sync": "node ../scripts/sync.mjs cordova",
+    "prepack": "npm run sync"
+  }
+}

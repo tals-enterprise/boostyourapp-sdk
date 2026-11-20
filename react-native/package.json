@@ -1,0 +1,39 @@
+{
+  "name": "@tals-enterprise/boostyourapp-react-native",
+  "version": "0.1.0",
+  "description": "Bannière du réseau d'échange de pubs BoostYourApp pour React Native et Expo (Android et iOS)",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "app.plugin.js",
+    "react-native.config.js",
+    "BoostyourappReactNative.podspec",
+    "android/build.gradle",
+    "android/src/main/",
+    "ios/"
+  ],
+  "keywords": ["react-native", "expo", "banner", "ads"],
+  "author": "BoostYourApp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tals-enterprise/boostyourapp-sdk.git",
+    "directory": "react-native"
+  },
+  "homepage": "https://github.com/tals-enterprise/boostyourapp-sdk/tree/main/react-native#readme",
+  "peerDependencies": {
+    "react-native": ">=0.73.0",
+    "expo": ">=50.0.0"
+  },
+  "peerDependenciesMeta": {
+    "expo": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "sync": "node ../scripts/sync.mjs react-native",
+    "prepack": "npm run sync"
+  }
+}

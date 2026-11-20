@@ -1,0 +1,58 @@
+{
+  "name": "@tals-enterprise/boostyourapp-capacitor",
+  "version": "0.1.0",
+  "description": "Bannière du réseau d'échange de pubs BoostYourApp pour Capacitor (Android et iOS)",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/Sources",
+    "Package.swift",
+    "BoostyourappCapacitor.podspec"
+  ],
+  "author": "BoostYourApp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tals-enterprise/boostyourapp-sdk.git",
+    "directory": "capacitor"
+  },
+  "homepage": "https://github.com/tals-enterprise/boostyourapp-sdk/tree/main/capacitor#readme",
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native",
+    "banner",
+    "ads"
+  ],
+  "scripts": {
+    "sync": "node ../scripts/sync.mjs capacitor",
+    "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "verify:android": "cd android && ./gradlew clean build && cd ..",
+    "verify:ios": "xcodebuild -scheme BoostyourappCapacitor -destination generic/platform=iOS",
+    "prepack": "npm run sync && npm run build"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "rollup": "^4.53.2",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=8.0.0"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  }
+}

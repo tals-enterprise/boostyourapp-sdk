@@ -1,0 +1,46 @@
+// Module React Native : le pont (com.boostyourapp.reactnative) et le cœur Android du SDK (com.boostyourapp.network),
+// copié depuis sdk/android par sdk/scripts/sync.mjs, compilés ensemble.
+
+buildscript {
+    ext.boostExt = { name, fallback -> rootProject.ext.has(name) ? rootProject.ext.get(name) : fallback }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.13.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${boostExt('kotlinVersion', '2.2.20')}"
+    }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+    namespace "com.boostyourapp.reactnative"
+    compileSdkVersion boostExt("compileSdkVersion", 36)
+
+    defaultConfig {
+        minSdkVersion boostExt("minSdkVersion", 24)
+        targetSdkVersion boostExt("targetSdkVersion", 36)
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    // Version fournie par l'app (plugin Gradle de React Native)
+    implementation "com.facebook.react:react-android"
+}
