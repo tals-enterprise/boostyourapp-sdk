@@ -122,7 +122,7 @@ internal class BannerController(
         val key = lookKey()
         if (store.getString(KEY_LOOK_REQUEST) != key) {
             look = Look(style = style ?: "standard")
-            currentAd?.let { ad -> banner?.bind(ad, look) }
+            currentAd?.let { ad -> banner?.bind(ad, ad.look ?: look) }
         }
         if (!stopped && !fetching) fetch(force = true, reportOnly = true)
     }
@@ -165,7 +165,7 @@ internal class BannerController(
             val wasHidden = view.visibility != View.VISIBLE
             view.visibility = View.VISIBLE
             // Le style dynamique est plus haut : la bannière suit la hauteur du style de la pub
-            view.bind(ad, look)
+            view.bind(ad, ad.look ?: look)
             if (wasHidden) view.playEnterAnimation(fromTop = position == BannerPosition.TOP)
         }
         emit(BoostEvent.Loaded(ad.id))
@@ -318,7 +318,7 @@ internal class BannerController(
             banner = view
             currentAd?.let {
                 view.visibility = View.VISIBLE
-                view.bind(it, look)
+                view.bind(it, it.look ?: look)
             }
         }
 
@@ -391,7 +391,7 @@ internal class BannerController(
         store.putString(KEY_LOOK_REQUEST, lookKey())
         if (newLook == look) return
         look = newLook
-        currentAd?.let { ad -> banner?.bind(ad, look) }
+        currentAd?.let { ad -> banner?.bind(ad, ad.look ?: look) }
     }
 
     private fun layoutParams(context: Context): FrameLayout.LayoutParams {

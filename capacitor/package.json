@@ -1,6 +1,6 @@
 {
   "name": "@tals-enterprise/boostyourapp-capacitor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Bannière du réseau d'échange de pubs BoostYourApp pour Capacitor (Android et iOS)",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

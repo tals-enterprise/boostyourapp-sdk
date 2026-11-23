@@ -77,10 +77,10 @@ object BoostNetwork {
     }
 
     /**
-     * Rendu des pubs dans votre app : [style] "standard" (carte claire) ou "dynamic" (vitrine : fond travaillé, mot
-     * surligné, captures en éventail), et [palette], clé d'une couleur de ce style (tableau de bord BoostYourApp,
-     * page d'intégration). Sans palette, ou palette inconnue : la première du style. Sans appel : standard.
-     * Peut être appelé avant ou après [init].
+     * Facultatif depuis la 0.2.0 : chaque annonceur choisit le style et les couleurs de sa pub (tableau de bord).
+     * Ce rendu ne s'applique qu'aux pubs sans style propre (pub « Boost your app ») : [style] "standard" (carte
+     * claire) ou "dynamic" (vitrine), et [palette], clé d'une couleur de ce style. Sans palette, ou palette
+     * inconnue : la première du style. Sans appel : standard. Peut être appelé avant ou après [init].
      */
     @JvmStatic
     @JvmOverloads

@@ -16,7 +16,6 @@ import BoostNetwork
 
 // application(_:didFinishLaunchingWithOptions:) ou init de l'App SwiftUI
 BoostNetwork.initialize(appKey: "bya_…")   // init étant réservé en Swift
-BoostNetwork.setStyle("dynamic", palette: "neon") // facultatif : style ("standard" par défaut) et palette
 
 // Là où la bannière doit apparaître
 BoostNetwork.showBanner("bottom")           // ou "top", ou showBanner(position: .top)

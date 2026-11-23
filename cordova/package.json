@@ -1,6 +1,6 @@
 {
   "name": "@tals-enterprise/boostyourapp-cordova",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Bannière du réseau d'échange de pubs BoostYourApp pour Cordova (Android et iOS)",
   "types": "types/index.d.ts",
   "cordova": {

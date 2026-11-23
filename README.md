@@ -9,7 +9,9 @@ réduit d'autant le contenu de votre app : rien n'est masqué.
 - La même API sur toutes les technos.
 
 **Avant de commencer** : ajoutez votre app sur [boostyourapp.tals.app](https://boostyourapp.tals.app). Sa clé
-(`bya_…`) se trouve dans l'onglet Intégration de la fiche de l'app.
+(`bya_…`) se trouve dans la page d'intégration de l'app. **Une clé par store** : la fiche Google Play et la fiche
+App Store d'une même app ont chacune la leur. Avec Capacitor, Cordova ou React Native (un seul code pour les deux
+plateformes), choisissez la clé selon la plateforme (exemples dans le README de chaque plugin).
 
 ## Installation
 
@@ -30,7 +32,7 @@ dependencyResolutionManagement {
 Puis la dépendance, dans le `build.gradle.kts` de l'app :
 
 ```kotlin
-implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.1")
+implementation("com.github.tals-enterprise:boostyourapp-sdk:0.2.0")
 ```
 
 Guide complet : [android/README.md](android/README.md).
@@ -41,7 +43,7 @@ Xcode › **File › Add Package Dependencies…**, URL `https://github.com/tals
 produit **BoostNetwork**. Ou dans un `Package.swift` :
 
 ```swift
-.package(url: "https://github.com/tals-enterprise/boostyourapp-sdk.git", from: "0.1.1")
+.package(url: "https://github.com/tals-enterprise/boostyourapp-sdk.git", from: "0.2.0")
 // cible : .product(name: "BoostNetwork", package: "boostyourapp-sdk")
 ```
 
@@ -80,7 +82,6 @@ Les mêmes appels partout :
 
 ```
 init("bya_…")           // une fois, au démarrage (Swift : BoostNetwork.initialize(appKey:))
-setStyle("dynamic", "neon") // facultatif : style ("standard" par défaut) et palette des pubs
 showBanner("bottom")    // ou "top"
 hideBanner()
 loadInterstitial()      // facultatif : prépare un interstitiel dès le lancement
@@ -98,7 +99,7 @@ Une pub compte quand la bannière est visible à 50 % au moins pendant 1 seconde
 ## Interstitiels
 
 Une pub plein écran, affichée quand vous l'appelez, à un moment naturel de pause : fin de niveau, retour à
-l'accueil. Elle reprend le style et la palette choisis avec `setStyle`.
+l'accueil. Elle reprend le style et la palette choisis par l'annonceur.
 
 - `showInterstitial` rend la main avec `false` aussitôt s'il n'y a pas de pub prête, ou si le précédent date de
   moins de 3 minutes (réglage du réseau), et avec `true` quand l'utilisateur ferme l'interstitiel. Dans les deux
@@ -113,14 +114,14 @@ l'accueil. Elle reprend le style et la palette choisis avec `setStyle`.
 
 ## Style des pubs
 
-Vous choisissez le rendu de toutes les pubs affichées dans votre app, en un appel facultatif (avant ou après
-`init`) :
+Chaque annonceur choisit le style et les couleurs de sa pub dans le tableau de bord (configuration de la
+publicité, avec un aperçu) : sa pub s'affiche ainsi dans toutes les apps du réseau. Rien à faire dans votre code.
 
-- `standard` (par défaut) : carte claire et sobre, bouton de couleur ;
+- `standard` : carte claire et sobre, bouton de couleur ;
 - `dynamic` : vitrine, avec fond travaillé, mot clé surligné, captures de l'app en éventail et animations.
 
-La palette de couleurs est désignée par sa clé, visible dans le tableau de bord (page d'intégration de votre
-app, avec un aperçu). Sans palette, ou avec une clé inconnue, c'est la première du style qui s'applique.
+`setStyle(style, palette)` n'est plus nécessaire depuis la version 0.2.0 : il ne s'applique qu'aux pubs sans
+style propre (la pub « Boost your app »). Les versions 0.1.x appliquent ce rendu à toutes les pubs.
 
 Palettes du style `dynamic` : `stade` (Stade de nuit), `retro` (Rétro crème), `neon` (Néon arcade),
 `minimal` (Minimal blanc), `ocean`, `coucher` (Coucher de soleil), `bonbon`, `foret`. Palettes du style

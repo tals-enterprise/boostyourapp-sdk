@@ -109,7 +109,7 @@ final class BannerController: NSObject {
         requestedPalette = palette
         if store.string(forKey: BannerController.lookRequestKey) != lookRequest {
             look = Look(style: style ?? "standard")
-            if let ad = currentAd { banner?.bind(ad, look: look) }
+            if let ad = currentAd { banner?.bind(ad, look: ad.look ?? look) }
         }
         if !stopped && !fetching { fetch(force: true, reportOnly: true) }
     }
@@ -148,7 +148,7 @@ final class BannerController: NSObject {
             let wasHidden = view.isHidden
             view.isHidden = false
             // Le style dynamique est plus haut : la bannière suit la hauteur du style de la pub
-            view.bind(next, look: look)
+            view.bind(next, look: next.look ?? look)
             if wasHidden { view.playEnterAnimation(fromTop: position == .top) }
         }
         emit(.loaded(next.id))
@@ -332,7 +332,7 @@ final class BannerController: NSObject {
             // Pub choisie avant que la fenêtre de l'app n'existe (lancement)
             if let ad = currentAd {
                 view.isHidden = false
-                view.bind(ad, look: look)
+                view.bind(ad, look: ad.look ?? look)
             }
         }
 
@@ -406,7 +406,7 @@ final class BannerController: NSObject {
         store.set(lookRequest, forKey: BannerController.lookRequestKey)
         guard newLook != look else { return }
         look = newLook
-        if let ad = currentAd { banner?.bind(ad, look: look) }
+        if let ad = currentAd { banner?.bind(ad, look: ad.look ?? look) }
     }
 
     /// L'app peut remplacer son contrôleur racine : la bannière repasse au-dessus de sa vue.

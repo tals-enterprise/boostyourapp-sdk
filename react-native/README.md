@@ -12,17 +12,23 @@ cd ios && pod install            # React Native sans Expo
 Expo : ajouter le config plugin, puis `npx expo prebuild` (Expo Go ne charge pas les modules natifs) :
 
 ```json
-{ "expo": { "plugins": [["@tals-enterprise/boostyourapp-react-native", { "appKey": "bya_…" }]] } }
+{ "expo": { "plugins": [["@tals-enterprise/boostyourapp-react-native", {
+  "androidAppKey": "bya_android…",
+  "iosAppKey": "bya_ios…"
+}]] } }
 ```
 
-Avec `appKey` dans le config plugin, `init()` peut être appelé sans argument.
+Une clé par store : `androidAppKey` (fiche Google Play) et `iosAppKey` (fiche App Store). `appKey` reste accepté pour
+une app présente sur un seul store. Avec les clés dans le config plugin, `init()` peut être appelé sans argument.
 
 ## Utilisation
 
 ```ts
+import { Platform } from 'react-native';
 import { BoostNetwork } from '@tals-enterprise/boostyourapp-react-native';
 
-await BoostNetwork.init('bya_…');
+// Une clé par store (tableau de bord BoostYourApp, page d'intégration de l'app)
+await BoostNetwork.init(Platform.OS === 'ios' ? 'bya_ios…' : 'bya_android…');
 await BoostNetwork.showBanner('bottom');   // ou 'top'
 await BoostNetwork.loadInterstitial();     // facultatif : interstitiel prêt dès le lancement
 const shown = await BoostNetwork.showInterstitial(); // pub plein écran : false si rien n'est prêt, true à la fermeture

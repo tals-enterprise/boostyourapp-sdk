@@ -16,16 +16,18 @@ struct Ad: Equatable {
     var version: String? = nil
     /// Style dynamique : captures de l'app en éventail (3 au plus)
     var screenshots: [String] = []
+    /// Rendu choisi par l'annonceur pour sa pub ; nil (serveur ancien, pub du service) : celui de l'app hôte
+    var look: Look? = nil
 
     func with(token: String) -> Ad {
         return Ad(id: id, name: name, descriptions: descriptions, languageCode: languageCode, iconUrl: iconUrl,
                   rating: rating, cta: cta, rotationSeconds: rotationSeconds, token: token, version: version,
-                  screenshots: screenshots)
+                  screenshots: screenshots, look: look)
     }
 }
 
-/// Rendu de toutes les pubs de l'app hôte, choisi par le développeur (`BoostNetwork.setStyle`) et résolu par le
-/// serveur : style (standard ou dynamic, inconnu : standard), couleurs de la palette (#RRGGBB : background,
+/// Rendu d'une pub, choisi par l'annonceur avec sa campagne (`Ad.look`) ; à défaut, rendu de l'app hôte
+/// (`BoostNetwork.setStyle`, pub du service ou serveur ancien). Résolu par le serveur : style (standard ou dynamic, inconnu : standard), couleurs de la palette (#RRGGBB : background,
 /// background2, border, patternColor, title, text, button, buttonText ; absente : celle du style par défaut),
 /// motif du fond (stripes, grid, dots) et police de l'accroche (serif, rounded) du style dynamique.
 /// En style dynamique, un mot entre étoiles dans une accroche est surligné (`Hooks`).
@@ -184,7 +186,8 @@ enum ApiJson {
             rotationSeconds: clamp(int(json["rotationSeconds"]) ?? 4, 2, 30),
             token: "",
             version: json["version"] as? String,
-            screenshots: Array(parseUrls(json["screenshots"]).prefix(3))
+            screenshots: Array(parseUrls(json["screenshots"]).prefix(3)),
+            look: (json["look"] as? [String: Any]).map(parseLook)
         )
     }
 
@@ -234,7 +237,8 @@ enum ApiJson {
             "cta": ad.cta,
             "rotationSeconds": ad.rotationSeconds,
             "version": (ad.version as Any?) ?? NSNull(),
-            "screenshots": ad.screenshots
+            "screenshots": ad.screenshots,
+            "look": (ad.look.map(lookJson) as Any?) ?? NSNull()
         ]
     }
 

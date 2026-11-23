@@ -4,5 +4,5 @@
 enum BoostConfig {
     static let apiUrl = "https://boostyourapp-api.tals.app"
     static let apiKey = "sb_publishable_HDkTnAYvPUI36ize7F1Bbg_meUvAZ7Q"
-    static let sdkVersion = "0.1.1"
+    static let sdkVersion = "0.2.0"
 }

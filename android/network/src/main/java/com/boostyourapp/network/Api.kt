@@ -21,12 +21,14 @@ internal data class Ad(
     /** Empreinte du contenu, pour le cache ([CreativeCache]) ; null avec un serveur ancien */
     val version: String? = null,
     /** Style dynamique : captures de l'app en éventail (3 au plus) */
-    val screenshots: List<String> = emptyList()
+    val screenshots: List<String> = emptyList(),
+    /** Rendu choisi par l'annonceur pour sa pub ; null (serveur ancien, pub du service) : celui de l'app hôte */
+    val look: Look? = null
 )
 
 /**
- * Rendu de toutes les pubs de l'app hôte, choisi par le développeur ([BoostNetwork.setStyle]) et résolu par le
- * serveur : style (standard ou dynamic, inconnu : standard), couleurs de la palette (#RRGGBB : background,
+ * Rendu d'une pub, choisi par l'annonceur avec sa campagne ([Ad.look]) ; à défaut, rendu de l'app hôte
+ * ([BoostNetwork.setStyle], pub du service ou serveur ancien). Résolu par le serveur : style (standard ou dynamic, inconnu : standard), couleurs de la palette (#RRGGBB : background,
  * background2, border, patternColor, title, text, button, buttonText ; absente : celle du style par défaut),
  * motif du fond (stripes, grid, dots) et police de l'accroche (serif, rounded) du style dynamique.
  * En style dynamique, un mot entre étoiles dans une accroche est surligné ([Hooks]).
@@ -173,7 +175,8 @@ internal object ApiJson {
             rotationSeconds = json.optInt("rotationSeconds", 4).coerceIn(2, 30),
             token = "",
             version = json.stringOrNull("version"),
-            screenshots = parseUrls(json.optJSONArray("screenshots")).take(3)
+            screenshots = parseUrls(json.optJSONArray("screenshots")).take(3),
+            look = json.optJSONObject("look")?.let(::parseLook)
         )
     }
 
@@ -222,6 +225,7 @@ internal object ApiJson {
         .put("rotationSeconds", ad.rotationSeconds)
         .put("version", ad.version ?: JSONObject.NULL)
         .put("screenshots", JSONArray(ad.screenshots))
+        .put("look", ad.look?.let(::lookJson) ?: JSONObject.NULL)
 
     private fun JSONObject.stringOrNull(key: String): String? = if (isNull(key)) null else optString(key)
 }

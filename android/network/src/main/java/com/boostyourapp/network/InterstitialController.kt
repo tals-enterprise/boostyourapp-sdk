@@ -106,7 +106,7 @@ internal class InterstitialController(
         lastShownAt = clock()
         store.putString(KEY_SHOWN_AT, lastShownAt.toString())
 
-        val view = InterstitialView(activity, images, current, host.currentLook, config.closeSeconds)
+        val view = InterstitialView(activity, images, current, current.look ?: host.currentLook, config.closeSeconds)
         val dialog = Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
         val session = Showing(current, activity, dialog, view, onFinished)
         view.onClose = { close(session) }

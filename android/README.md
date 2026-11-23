@@ -9,7 +9,7 @@ Dépôt JitPack dans `settings.gradle.kts` (`maven("https://jitpack.io")` dans `
 puis dans le `build.gradle.kts` de l'app :
 
 ```kotlin
-implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.1")
+implementation("com.github.tals-enterprise:boostyourapp-sdk:0.2.0")
 ```
 
 ## Intégration
@@ -17,7 +17,6 @@ implementation("com.github.tals-enterprise:boostyourapp-sdk:0.1.1")
 ```kotlin
 // Application.onCreate() (ou la première activité)
 BoostNetwork.init(this, "bya_…")       // clé de l'app, dans le tableau de bord BoostYourApp
-BoostNetwork.setStyle("dynamic", "neon") // facultatif : style ("standard" par défaut) et palette
 
 // Là où la bannière doit apparaître
 BoostNetwork.showBanner("bottom")      // ou "top"

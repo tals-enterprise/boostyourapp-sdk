@@ -13,17 +13,18 @@ npx cap sync
 Avant publication sur npm, installer le paquet construit localement (voir plus bas) :
 
 ```bash
-npm install ./vendor/boostyourapp-capacitor-0.1.1.tgz
+npm install ./vendor/boostyourapp-capacitor-0.2.0.tgz
 npx cap sync
 ```
 
 ## Utilisation
 
 ```ts
+import { Capacitor } from '@capacitor/core';
 import { BoostNetwork } from '@tals-enterprise/boostyourapp-capacitor';
 
-await BoostNetwork.init('bya_…');          // clé de l'app, dans le tableau de bord BoostYourApp
-await BoostNetwork.setStyle('dynamic', 'neon'); // facultatif : style ('standard' par défaut) et palette
+// Une clé par store (tableau de bord BoostYourApp, page d'intégration de l'app)
+await BoostNetwork.init(Capacitor.getPlatform() === 'ios' ? 'bya_ios…' : 'bya_android…');
 await BoostNetwork.showBanner('bottom');   // ou 'top'
 await BoostNetwork.hideBanner();
 
@@ -66,7 +67,7 @@ Le build iOS n'a pas pu être fait sur la machine de développement (Windows). A
 2. **Paquet** : renseigner `boost.apiUrl` et `boost.apiKey` dans `sdk/android/gradle.properties`, lancer
    `npm pack` ici, copier le `.tgz` dans le dépôt de l'app (par exemple `vendor/`) et le **committer** :
    Appflow construit à partir du dépôt git.
-3. **App** : `npm install ./vendor/boostyourapp-capacitor-0.1.1.tgz`, puis appeler `BoostNetwork.init(…)` et
+3. **App** : `npm install ./vendor/boostyourapp-capacitor-0.2.0.tgz`, puis appeler `BoostNetwork.init(…)` et
    `showBanner(…)` après le chargement. Ensuite `npx cap sync ios`, commit et push.
 4. **Build** : lancer un build iOS sur Appflow. Swift Package Manager et CocoaPods sont tous deux pris en
    charge (`Package.swift` et `BoostyourappCapacitor.podspec`).

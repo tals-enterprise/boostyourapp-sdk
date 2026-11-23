@@ -14,7 +14,8 @@ cordova plugin add ./vendor/boostyourapp-cordova
 
 ```js
 document.addEventListener('deviceready', async () => {
-  await BoostNetwork.init('bya_…');
+  // Une clé par store (tableau de bord BoostYourApp, page d'intégration de l'app)
+  await BoostNetwork.init(cordova.platformId === 'ios' ? 'bya_ios…' : 'bya_android…');
   await BoostNetwork.showBanner('bottom');   // ou 'top'
   await BoostNetwork.loadInterstitial();     // facultatif : interstitiel prêt dès le lancement
   const shown = await BoostNetwork.showInterstitial(); // pub plein écran : false si rien n'est prêt, true à la fermeture

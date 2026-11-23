@@ -97,7 +97,7 @@ final class InterstitialController {
         lastShownAt = Date().timeIntervalSince1970
         store.set(String(lastShownAt), forKey: InterstitialController.shownAtKey)
 
-        let controller = InterstitialViewController(ad: current, look: host.currentLook, closeSeconds: config.closeSeconds,
+        let controller = InterstitialViewController(ad: current, look: current.look ?? host.currentLook, closeSeconds: config.closeSeconds,
                                                     images: images)
         let session = Showing(ad: current, controller: controller, onFinished: onFinished)
         controller.onClose = { [weak self, weak session] in
