@@ -282,6 +282,9 @@ final class ShowcaseView: UIView {
             if ad != nil { showHook(animated: false) }
         }
         super.layoutSubviews()
+        // La pile place ses vues (éventail, bouton) dans sa propre mise en page, qui vient après celle-ci : la forcer
+        // maintenant, pour que l'arrondi du bouton, son reflet et l'éventail partent de leurs vraies dimensions
+        row.layoutIfNeeded()
 
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -305,7 +308,9 @@ final class ShowcaseView: UIView {
         layoutMarks(progress: 1)
     }
 
-    /// Captures en 9:16 aussi hautes que l'éventail, pivot en bas au centre
+    /// Captures en 9:16 aussi hautes que l'éventail, pivot en bas au centre. Placées d'après la hauteur voulue de
+    /// l'éventail (fanHeight) et non d'après ses dimensions : la pile ne l'a pas encore dimensionné quand cette vue est
+    /// mise en page, et un éventail encore à 0 décalait les captures d'une demi-hauteur vers le haut (rognées).
     private func layoutShots() {
         let height = fanHeight.constant
         let width = height * 0.56
@@ -313,7 +318,8 @@ final class ShowcaseView: UIView {
             let transform = shot.transform
             shot.transform = .identity
             shot.bounds = CGRect(x: 0, y: 0, width: width, height: height)
-            shot.center = CGPoint(x: 4 + width / 2, y: fan.bounds.midY + height / 2)
+            // Point d'ancrage en bas : la position est le bas de la capture, posé sur le bas de l'éventail
+            shot.center = CGPoint(x: 4 + width / 2, y: height)
             shotImages[i].frame = shot.bounds
             shotDims[i].frame = shot.bounds
             shot.layer.shadowPath = UIBezierPath(roundedRect: shot.bounds, cornerRadius: 5).cgPath

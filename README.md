@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 Puis la dépendance, dans le `build.gradle.kts` de l'app :
 
 ```kotlin
-implementation("com.github.tals-enterprise:boostyourapp-sdk:0.2.0")
+implementation("com.github.tals-enterprise:boostyourapp-sdk:0.2.1")
 ```
 
 Guide complet : [android/README.md](android/README.md).
@@ -43,7 +43,7 @@ Xcode › **File › Add Package Dependencies…**, URL `https://github.com/tals
 produit **BoostNetwork**. Ou dans un `Package.swift` :
 
 ```swift
-.package(url: "https://github.com/tals-enterprise/boostyourapp-sdk.git", from: "0.2.0")
+.package(url: "https://github.com/tals-enterprise/boostyourapp-sdk.git", from: "0.2.1")
 // cible : .product(name: "BoostNetwork", package: "boostyourapp-sdk")
 ```
 

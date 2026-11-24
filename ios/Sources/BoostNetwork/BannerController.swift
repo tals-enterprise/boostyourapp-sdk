@@ -362,7 +362,11 @@ final class BannerController: NSObject {
     /// qui respectent la zone sûre s'arrêtent au-dessus de la bannière, rien n'est masqué.
     private func reserveSpace(in window: UIWindow) {
         guard let root = window.rootViewController else { return }
-        let space = BannerView.height + 2 * BannerView.margin
+        // En bas : de l'écart sous la bannière (bottomGap) à 8 pt au-dessus d'elle, moins la zone sûre de l'appareil,
+        // déjà réservée (barre d'accueil)
+        let space = position == .top ? BannerView.height + 2 * BannerView.margin
+            : max(0, BannerController.bottomGap(in: window) + BannerView.height + BannerView.margin
+                  - window.safeAreaInsets.bottom)
         let wanted = position == .top ? UIEdgeInsets(top: space, left: 0, bottom: 0, right: 0)
             : UIEdgeInsets(top: 0, left: 0, bottom: space, right: 0)
         if root === reservedController && wanted == reservedInsets { return }
@@ -418,7 +422,16 @@ final class BannerController: NSObject {
         window.insertSubview(view, aboveSubview: root)
     }
 
-    /// Centrée, 468 pt au plus, à 8 pt du bord dans la zone sûre (encoche, barre d'accueil).
+    /// Écart sous une bannière en bas de l'écran : 8 pt au-dessus de la barre d'accueil (13 pt du bas de l'écran), pas
+    /// au-dessus de toute la zone sûre (34 pt, qui laissait une large bande vide) ; 8 pt sans barre d'accueil.
+    static func bottomGap(in window: UIWindow) -> CGFloat {
+        return max(BannerView.margin, window.safeAreaInsets.bottom - homeIndicatorClearance)
+    }
+
+    /// Hauteur de zone sûre que la bannière peut occuper sous la barre d'accueil : 34 pt de zone sûre - 13 pt de barre
+    private static let homeIndicatorClearance: CGFloat = 13
+
+    /// Centrée, 468 pt au plus, à 8 pt des bords de la zone sûre ; en bas, juste au-dessus de la barre d'accueil.
     private func installConstraints(_ view: UIView, in window: UIWindow) {
         NSLayoutConstraint.deactivate(bannerConstraints)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -438,7 +451,12 @@ final class BannerController: NSObject {
         if position == .top {
             constraints.append(view.topAnchor.constraint(equalTo: guide.topAnchor, constant: margin))
         } else {
-            constraints.append(view.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -margin))
+            // max(8 pt du bas de l'écran, zone sûre - 13 pt) : suit aussi la zone sûre en paysage (21 pt)
+            let aboveIndicator = view.bottomAnchor.constraint(equalTo: guide.bottomAnchor,
+                                                              constant: BannerController.homeIndicatorClearance)
+            aboveIndicator.priority = .defaultHigh
+            constraints.append(aboveIndicator)
+            constraints.append(view.bottomAnchor.constraint(lessThanOrEqualTo: window.bottomAnchor, constant: -margin))
         }
         NSLayoutConstraint.activate(constraints)
         bannerConstraints = constraints

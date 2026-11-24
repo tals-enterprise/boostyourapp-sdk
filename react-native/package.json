@@ -1,6 +1,6 @@
 {
   "name": "@tals-enterprise/boostyourapp-react-native",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Bannière du réseau d'échange de pubs BoostYourApp pour React Native et Expo (Android et iOS)",
   "main": "index.js",
   "types": "index.d.ts",
